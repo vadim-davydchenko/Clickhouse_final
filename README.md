@@ -67,3 +67,45 @@ sudo systemctl start zookeeper
 ```
 ##### 1.4 Configuration [cluster.xml](https://github.com/vadim-davydchenko/Clickhouse_final/blob/master/cluster.xml) with zookeeper and macros(on the remaining nodes, change the replica values to ch2, ch3, ch4 in the macros)
 
+*Give rights*
+
+```
+sudo chown clickhouse:clickhouse /etc/clickhouse-server/cluster.xml && sudo chmod 777 cluster.xml
+sudo systemctl restart clickhouse-server
+```
+
+#### 2. In cluster create table `events_local` replicated in every shard
+
+```
+CREATE TABLE events_local ON CLUSTER 'ch_cluster'
+(
+    event_type Int64,
+    title String,
+    description String,
+    content String,
+    datetime Date
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/{cluster}/tables/events_local', '{replica}')
+PARTITION BY datetime
+ORDER BY event_type;
+```
+#### 3. Create table `events_distributed` which will look at two shards and replicas in them
+
+```
+CREATE TABLE events_distributed ON CLUSTER 'ch_cluster'
+(
+    event_type Int64,
+    title String,
+    description String,
+    content String,
+    datetime Date
+)
+ENGINE = Distributed('{cluster}', 'default', 'events_local', rand());
+```
+#### 4. Insert data in replicated table
+
+```
+INSERT INTO events_distributed (*) VALUES (1, 'test', 'ab', 'sdasd', '2019-01-01');
+INSERT INTO events_distributed (*) VALUES (2, 'test2', 'abc', 'sdaasdsd', '2019-02-01');
+INSERT INTO events_distributed (*) VALUES (3, 'test3', 'abd', 'sadasd', '2019-03-01');
+```
