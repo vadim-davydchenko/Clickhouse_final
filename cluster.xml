@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<yandex>
+    <clickhouse_cluster>
+        <ch_cluster>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>142.93.129.118</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>104.248.92.140</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>142.93.129.38</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>104.248.92.142</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </ch_cluster>
+    </clickhouse_cluster>
+
+    <zookeeper>
+        <node index="1">
+            <host>142.93.129.118</host>
+            <port>2181</port>
+        </node>
+        <node index="2">
+            <host>104.248.92.140</host>
+            <port>2181</port>
+        </node>
+        <node index="3">
+            <host>142.93.129.38</host>
+            <port>2181</port>
+        </node>
+    </zookeeper>
+
+    <macros>
+        <cluster>ch_cluster</cluster>
+        <replica>server1</replica>
+        <shard>01</shard>
+    </macros>
+</yandex>
