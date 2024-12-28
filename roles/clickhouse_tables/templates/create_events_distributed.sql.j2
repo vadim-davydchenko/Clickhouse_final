@@ -1,0 +1,9 @@
+CREATE TABLE {{ events_distributed_table }} ON CLUSTER '{{ clickhouse_tables_cluster_name }}'
+(
+    event_type Int64,
+    title String,
+    description String,
+    content String,
+    datetime Date
+)
+ENGINE = Distributed('{{ clickhouse_tables_cluster_name }}', '{{ clickhouse_tables_database }}', '{{ clickhouse_tables_events_local_table }}', rand());

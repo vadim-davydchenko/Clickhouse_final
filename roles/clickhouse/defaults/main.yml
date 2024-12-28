@@ -1,0 +1,15 @@
+clickhouse_zookeeper_version: "3.8.0"
+clickhouse_zookeeper_user: "zookeeper"
+clickhouse_zookeeper_data_dir: "/var/lib/zookeeper"
+clickhouse_zookeeper_log_dir: "/var/lib/zookeeper"
+clickhouse_version: "22.3.3.44"
+clickhouse_cluster_name: "ch_cluster"
+clickhouse_nodes:
+  - { host: "server1", shard: "01", replica: "server1" }
+  - { host: "server2", shard: "01", replica: "server2" }
+  - { host: "server3", shard: "02", replica: "server3" }
+  - { host: "server4", shard: "02", replica: "server4" }
+clickhouse_zookeeper_nodes:
+  - { host: "server1", id: 1 }
+  - { host: "server2", id: 2 }
+  - { host: "server3", id: 3 }

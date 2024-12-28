@@ -1,0 +1,16 @@
+- name: Configure ClickHouse config.xml
+  ansible.builtin.template:
+    src: config.xml.j2
+    dest: /etc/clickhouse-server/config.xml
+    mode: '0644'
+
+- name: Configure ClickHouse cluster.xml
+  ansible.builtin.template:
+    src: cluster.xml.j2
+    dest: /etc/clickhouse-server/cluster.xml
+    mode: '0644'
+
+- name: Restart ClickHouse
+  ansible.builtin.systemd:
+    name: clickhouse-server
+    state: restarted

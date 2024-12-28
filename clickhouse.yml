@@ -1,0 +1,6 @@
+- name: Install and configure Clickhouse server
+  hosts: all
+  become: true
+  roles:
+    - clickhouse
+    - clickhouse_tables

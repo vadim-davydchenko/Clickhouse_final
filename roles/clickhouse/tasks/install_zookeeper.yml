@@ -1,0 +1,45 @@
+- name: Install java
+  ansible.builtin.apt:
+    name: default-jre-headless
+    state: present
+
+- name: Download zookeeper
+  ansible.builtin.get_url:
+    url: "https://dlcdn.apache.org/zookeeper/zookeeper-{{ clickhouse_zookeeper_version }}/apache-zookeeper-{{ clickhouse_zookeeper_version }}-bin.tar.gz"
+    dest: /opt/zookeeper.tar.gz
+    mode: "0644"
+
+- name: Extract zookeeper
+  ansible.builtin.unarchive:
+    src: /opt/zookeeper.tar.gz
+    dest: /opt/zookeeper
+    remote_src: true
+
+- name: Configure zoo.cfg
+  ansible.builtin.template:
+    src: zoo.cfg.j2
+    dest: /opt/zookeeper/conf/zoo.cfg
+    mode: "0644"
+
+- name: Configure zookeeper service
+  ansible.builtin.template:
+    src: zookeeper.service.j2
+    dest: /lib/systemd/system/zookeeper.service
+    mode: "0644"
+
+- name: Created required directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ clickhouse_zookeeper_user }}"
+    group: "{{ clickhouse_zookeeper_user }}"
+  with_items:
+    - "{{ clickhouse_zookeeper_data_dir }}"
+    - "{{ clickhouse_zookeeper_log_dir }}"
+
+- name: Start zookeeper
+  ansible.builtin.service:
+    name: zookeeper
+    state: started
+    enabled: true

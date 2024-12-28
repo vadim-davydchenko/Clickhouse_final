@@ -1,0 +1,6 @@
+- name: Insert data in events_distributed table
+  ansible.builtin.shell: |
+    clickhouse-client --query "{{ lookup('template', 'insert_data.sql.j2') }}"
+  args:
+    executable: /bin/bash
+  changed_when: false

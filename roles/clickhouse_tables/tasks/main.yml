@@ -1,0 +1,5 @@
+- name: Create ClickHouse tables
+  ansible.builtin.include_tasks: create_tables.yml
+
+- name: Insert data in ClickHouse tables
+  ansible.builtin.include_tasks: insert_data.yml

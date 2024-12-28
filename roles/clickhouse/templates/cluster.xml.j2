@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<yandex>
+    <{{ zookeeper_clickhouse_cluster_name }}>
+        {% for node in clickhouse_nodes %}
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>{{ node.host }}</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>104.248.92.140</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        {% endfor %}
+    </{{ zookeeper_clickhouse_cluster_name }}>
+
+
+    <zookeeper>
+        {% for zk in zookeeper_nodes %}
+        <node index="{{ zk.id }}">
+            <host>{{ zk.host }}</host>
+            <port>2181</port>
+        </node>
+        <node index="2">
+            <host>104.248.92.140</host>
+            <port>2181</port>
+        </node>
+        {% endfor %}
+    </zookeeper>
+
+    <macros>
+        <cluster>{{ zookeeper_clickhouse_cluster_name }}</cluster>
+        <replica>{{ inventory_hostname }}</replica>
+        <shard>
+            {% for node in clickhouse_nodes if node.host == inventory_hostname %}
+            {{ node.shard }}
+            {% endfor %}
+        </shard>
+    </macros>
+</yandex>

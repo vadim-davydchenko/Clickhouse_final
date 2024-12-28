@@ -1,0 +1,4 @@
+{% for row in events_data %}
+INSERT INTO {{ clickhouse_tables_events_distributed_table }} (*)
+VALUES ({{ row.event_type }}, '{{ row.title }}', '{{ row.description }}', '{{ row.content }}', '{{ row.datetime }}');
+{% endfor %}

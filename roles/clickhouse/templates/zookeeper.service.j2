@@ -1,11 +1,11 @@
 [Unit]
-Description=zookeeper:3.8.0
+Description=zookeeper:{{ clickhouse_zookeeper_version }}
 After=network.target
 
 [Service]
 Type=forking
-User=zookeeper
-Group=zookeeper
+User={{ clickhouse_zookeeper_user }}
+Group={{ clickhouse_zookeeper_user }}
 
 WorkingDirectory=/opt/zookeeper
 

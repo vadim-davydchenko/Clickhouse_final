@@ -1,0 +1,13 @@
+- name: Create event_local table
+  ansible.builtin.shell: |
+    clickhouse-client --query "{{ lookup('template', 'create_events_local.sql.j2') }}"
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Create event_distributed table
+  ansible.builtin.shell: |
+    clickhouse-client --query "{{ lookup('template', 'create_events_distributed.sql.j2') }}"
+  args:
+    executable: /bin/bash
+  changed_when: false

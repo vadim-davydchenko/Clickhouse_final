@@ -1,0 +1,8 @@
+clickhouse_tables_cluster_name: "ch_cluster"
+clickhouse_tables_database: "default"
+clickhouse_tables_events_local_table: "events_local"
+clickhouse_tables_events_distributed_table: "events_distributed"
+clickhouse_tables_events_data:
+  - { event_type: 1, title: "test", description: "ab", content: "sdasd", datetime: "2019-01-01" }
+  - { event_type: 2, title: "test2", description: "abc", content: "sdaasdsd", datetime: "2019-02-01" }
+  - { event_type: 3, title: "test3", description: "abd", content: "sadasd", datetime: "2019-03-01" }

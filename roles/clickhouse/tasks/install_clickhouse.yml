@@ -1,0 +1,35 @@
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - dirmngr
+
+- name: Add ClickHouse repository key
+  ansible.builtin.command: >
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
+  changed_when: false
+
+- name: Add ClickHouse repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://packages.clickhouse.com/deb stable main"
+    update_cache: true
+    state: present
+
+- name: Install ClickHouse
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - clickhouse-server
+    - clickhouse-client
+
+- name: Start ClickHouse
+  ansible.builtin.service:
+    name: clickhouse-server
+    state: started
+    enabled: true

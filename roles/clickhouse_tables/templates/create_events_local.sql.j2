@@ -1,0 +1,11 @@
+CREATE TABLE {{ events_local_table }} ON CLUSTER '{{ clickhouse_tables_cluster_name }}'
+(
+    event_type Int64,
+    title String,
+    description String,
+    content String,
+    datetime Date
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/{{ clickhouse_tables_cluster_name }}/tables/{{ clickhouse_tables_events_local_table }}', '{replica}')
+PARTITION BY datetime
+ORDER BY event_type;
